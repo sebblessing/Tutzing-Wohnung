@@ -258,12 +258,14 @@
     margin-top: 4px;
     font-size: 17px;
   }
-  .form-hint {
-    font-size: 14px;
-    color: #6B7280;
-    margin: 4px 0 0;
+  .form-status {
     text-align: center;
+    margin: 8px 0 0;
+    font-size: 15px;
+    min-height: 1.2em;
   }
+  .form-status.success { color: #047857; font-weight: 600; }
+  .form-status.error { color: #B91C1C; font-weight: 600; }
 
   .sticky-bar {
     position: fixed;
@@ -406,8 +408,8 @@
         <span>Nachricht</span>
         <textarea name="message" rows="5" required placeholder="Ihr Hinweis zu einer passenden Wohnung …"></textarea>
       </label>
-      <button type="submit" class="btn btn-primary">Nachricht senden</button>
-      <p class="form-hint">Der Klick öffnet Ihr E-Mail-Programm mit einer vorbereiteten Nachricht — Sie können den Text noch prüfen und dann abschicken.</p>
+      <button type="submit" class="btn btn-primary" id="form-submit">Nachricht senden</button>
+      <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
     </form>
   </div>
 
@@ -438,20 +440,41 @@
       }, { threshold: [0, 1] }).observe(heroCta);
     }
 
+    var WEBHOOK_URL = 'https://hook.eu1.make.com/s1dkm0l6dx75cq8pj7v8g7o1iuqv3ox2';
     var form = document.getElementById('tipp-form');
     if (form) {
       form.addEventListener('submit', function(e) {
         e.preventDefault();
         if (!form.checkValidity()) { form.reportValidity(); return; }
-        var name = form.name.value.trim();
-        var email = form.email.value.trim();
-        var message = form.message.value.trim();
-        var body = 'Name: ' + name + '\nE-Mail: ' + email + '\n\n' + message;
-        var subject = 'Tipp für Wohnung in Tutzing';
-        var mailto = 'mailto:sebblessing@gmail.com'
-          + '?subject=' + encodeURIComponent(subject)
-          + '&body=' + encodeURIComponent(body);
-        window.location.href = mailto;
+        var submitBtn = document.getElementById('form-submit');
+        var statusEl = document.getElementById('form-status');
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Wird gesendet …';
+        statusEl.textContent = '';
+        statusEl.className = 'form-status';
+        var payload = {
+          name: form.name.value.trim(),
+          email: form.email.value.trim(),
+          message: form.message.value.trim(),
+          source: 'tutzing-zuhause.de',
+          timestamp: new Date().toISOString()
+        };
+        fetch(WEBHOOK_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        }).then(function(res) {
+          if (!res.ok) throw new Error('HTTP ' + res.status);
+          form.reset();
+          statusEl.textContent = 'Vielen Dank! Ihre Nachricht ist bei uns angekommen — wir melden uns zeitnah.';
+          statusEl.className = 'form-status success';
+          submitBtn.textContent = 'Gesendet ✓';
+        }).catch(function() {
+          statusEl.textContent = 'Ups, das Senden hat nicht geklappt. Bitte schreiben Sie direkt an sebblessing@gmail.com oder rufen Sie an.';
+          statusEl.className = 'form-status error';
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Erneut versuchen';
+        });
       });
     }
   })();
