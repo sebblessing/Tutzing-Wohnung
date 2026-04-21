@@ -179,6 +179,92 @@
     font-size: 16px;
   }
 
+  .finderlohn-section {
+    background: linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%);
+    border-radius: 20px;
+    padding: 32px 24px;
+    margin-top: 32px;
+    border: 1px solid #BFDBFE;
+    text-align: center;
+  }
+  .finderlohn-section h2 { margin-top: 0; margin-bottom: 4px; }
+  .finderlohn-amount {
+    display: block;
+    font-size: 48px;
+    font-weight: 800;
+    color: #1D4ED8;
+    letter-spacing: -0.02em;
+    margin: 12px 0 16px;
+    line-height: 1;
+  }
+  .finderlohn-section p { margin-bottom: 0; color: #1E3A8A; }
+
+  .form-section {
+    background: white;
+    border-radius: 20px;
+    padding: 32px 24px;
+    margin-top: 24px;
+    box-shadow: 0 2px 12px rgba(17, 24, 39, 0.05);
+    border: 1px solid #F3F4F6;
+  }
+  .form-section h2 { margin-top: 0; }
+  .contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: 20px;
+  }
+  .contact-form label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #374151;
+  }
+  .contact-form input,
+  .contact-form textarea {
+    font: inherit;
+    font-size: 17px;
+    font-weight: 400;
+    padding: 12px 14px;
+    border: 1.5px solid #E5E7EB;
+    border-radius: 10px;
+    background: #FAFAFA;
+    color: #1F2937;
+    transition: border-color 0.15s, background 0.15s;
+    width: 100%;
+    box-sizing: border-box;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  .contact-form input:focus,
+  .contact-form textarea:focus {
+    outline: none;
+    border-color: #2563EB;
+    background: white;
+  }
+  .contact-form input:invalid:not(:placeholder-shown),
+  .contact-form textarea:invalid:not(:placeholder-shown) {
+    border-color: #F87171;
+  }
+  .contact-form textarea {
+    resize: vertical;
+    min-height: 110px;
+    font-family: inherit;
+  }
+  .contact-form .btn {
+    align-self: stretch;
+    margin-top: 4px;
+    font-size: 17px;
+  }
+  .form-hint {
+    font-size: 14px;
+    color: #6B7280;
+    margin: 4px 0 0;
+    text-align: center;
+  }
+
   .sticky-bar {
     position: fixed;
     bottom: 0;
@@ -250,9 +336,6 @@
   <h2>Über uns</h2>
   <p>Wir sind eine junge Familie — Michaela, Sebastian und unser zweijähriger Sohn — und suchen ein neues Zuhause in Tutzing. Michaela ist Lehrerin für Sonderpädagogik. Sebastian ist Geschäftsführer einer Marketingagentur mit Sitz in Starnberg. Wir leben ruhig, zuverlässig und wünschen uns ein langfristiges Mietverhältnis.</p>
 
-  <h2>Unsere aktuelle Situation</h2>
-  <p>Aktuell wohnen wir in München-Pasing in einer 3-Zimmer-Wohnung und wünschen uns als Familie mehr Platz und ein grüneres Umfeld. Michaelas Eltern stammen aus Dießen am Ammersee — die Region ist uns bestens vertraut, und wir möchten näher zur Familie ziehen. Auch beruflich ist Sebastian durch seine in Starnberg ansässige Marketingagentur fest in der Gegend verwurzelt.</p>
-
   <hr class="divider">
 
   <div class="cards">
@@ -278,6 +361,9 @@
     </div>
   </div>
 
+  <h2>Unsere aktuelle Situation</h2>
+  <p>Aktuell wohnen wir in München-Pasing in einer 3-Zimmer-Wohnung und wünschen uns als Familie mehr Platz und ein grüneres Umfeld. Michaelas Eltern stammen aus Dießen am Ammersee — die Region ist uns bestens vertraut, und wir möchten näher zur Familie ziehen. Auch beruflich ist Sebastian durch seine in Starnberg ansässige Marketingagentur fest in der Gegend verwurzelt.</p>
+
   <div class="contact-section">
     <h2>Kontakt</h2>
     <p>Wir freuen uns sehr über passende Angebote oder Hinweise und stehen jederzeit gern für ein persönliches Kennenlernen zur Verfügung.</p>
@@ -296,6 +382,33 @@
       </a>
     </div>
     <p class="signature">Michaela, Sebastian und der kleine Pius :)</p>
+  </div>
+
+  <div class="finderlohn-section">
+    <h2>Finderlohn für Ihren Tipp</h2>
+    <span class="finderlohn-amount">500 €</span>
+    <p>Wenn wir durch Ihren Hinweis unser neues Zuhause finden und dort einziehen, bedanken wir uns mit <strong>500 € Finderlohn</strong>. Egal ob aus der Nachbarschaft, vom eigenen Objekt oder von Bekannten — jeder Tipp zählt.</p>
+  </div>
+
+  <div class="form-section">
+    <h2>Direkt einen Tipp schicken</h2>
+    <p>Schreiben Sie uns über das Formular — wir melden uns zeitnah zurück.</p>
+    <form class="contact-form" id="tipp-form" novalidate>
+      <label>
+        <span>Name</span>
+        <input type="text" name="name" required autocomplete="name">
+      </label>
+      <label>
+        <span>E-Mail</span>
+        <input type="email" name="email" required autocomplete="email" inputmode="email">
+      </label>
+      <label>
+        <span>Nachricht</span>
+        <textarea name="message" rows="5" required placeholder="Ihr Hinweis zu einer passenden Wohnung …"></textarea>
+      </label>
+      <button type="submit" class="btn btn-primary">Nachricht senden</button>
+      <p class="form-hint">Der Klick öffnet Ihr E-Mail-Programm mit einer vorbereiteten Nachricht — Sie können den Text noch prüfen und dann abschicken.</p>
+    </form>
   </div>
 
 </main>
@@ -319,10 +432,28 @@
   (function() {
     var heroCta = document.getElementById('hero-cta');
     var stickyBar = document.querySelector('.sticky-bar');
-    if (!heroCta || !stickyBar || !('IntersectionObserver' in window)) return;
-    new IntersectionObserver(function(entries) {
-      stickyBar.classList.toggle('visible', entries[0].intersectionRatio < 1);
-    }, { threshold: [0, 1] }).observe(heroCta);
+    if (heroCta && stickyBar && 'IntersectionObserver' in window) {
+      new IntersectionObserver(function(entries) {
+        stickyBar.classList.toggle('visible', entries[0].intersectionRatio < 1);
+      }, { threshold: [0, 1] }).observe(heroCta);
+    }
+
+    var form = document.getElementById('tipp-form');
+    if (form) {
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        if (!form.checkValidity()) { form.reportValidity(); return; }
+        var name = form.name.value.trim();
+        var email = form.email.value.trim();
+        var message = form.message.value.trim();
+        var body = 'Name: ' + name + '\nE-Mail: ' + email + '\n\n' + message;
+        var subject = 'Tipp für Wohnung in Tutzing';
+        var mailto = 'mailto:sebblessing@gmail.com'
+          + '?subject=' + encodeURIComponent(subject)
+          + '&body=' + encodeURIComponent(body);
+        window.location.href = mailto;
+      });
+    }
   })();
 </script>
 
