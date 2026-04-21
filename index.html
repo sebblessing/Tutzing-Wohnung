@@ -222,6 +222,7 @@
     line-height: 1;
   }
   .finderlohn-section p { margin-bottom: 0; color: #1E3A8A; }
+  .finderlohn-section .finderlohn-note { margin-top: 14px; font-size: 14px; color: #3B5A9F; }
 
   .form-section {
     background: white;
@@ -441,6 +442,7 @@
     <h2>Finderlohn für deinen Tipp</h2>
     <span class="finderlohn-amount">500 €</span>
     <p>Wenn wir durch deinen Hinweis unser neues Zuhause finden und dort einziehen, bedanken wir uns mit <strong>500 € Finderlohn</strong>. Egal ob aus der Nachbarschaft, vom eigenen Objekt oder von Bekannten — jeder Tipp zählt.</p>
+    <p class="finderlohn-note">Sollten uns mehrere Personen denselben Tipp geben, geht der Finderlohn an die Person, deren Hinweis uns zuerst erreicht hat.</p>
   </div>
 
   <div class="contact-section">
@@ -519,13 +521,31 @@
     var WEBHOOK_URL = 'https://hook.eu1.make.com/s1dkm0l6dx75cq8pj7v8g7o1iuqv3ox2';
     var form = document.getElementById('tipp-form');
     if (form) {
+      var submitBtn = document.getElementById('form-submit');
+      var statusEl = document.getElementById('form-status');
+      var submitting = false;
+      var submittedSuccessfully = false;
+
+      function resetFormState() {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Nachricht senden';
+        statusEl.textContent = '';
+        statusEl.className = 'form-status';
+        form.classList.remove('was-submitted');
+      }
+
       form.addEventListener('input', function(e) {
         if (e.target.classList) e.target.classList.remove('field-error');
+        if (submittedSuccessfully) {
+          submittedSuccessfully = false;
+          resetFormState();
+        }
       });
+
       form.addEventListener('submit', function(e) {
         e.preventDefault();
-        var submitBtn = document.getElementById('form-submit');
-        var statusEl = document.getElementById('form-status');
+        if (submitting || submittedSuccessfully) return;
+
         var name = form.name.value.trim();
         var email = form.email.value.trim();
         var message = form.message.value.trim();
@@ -547,6 +567,7 @@
           return;
         }
 
+        submitting = true;
         submitBtn.disabled = true;
         submitBtn.textContent = 'Wird gesendet …';
         statusEl.textContent = '';
@@ -564,12 +585,15 @@
           body: JSON.stringify(payload)
         }).then(function(res) {
           if (!res.ok) throw new Error('HTTP ' + res.status);
+          submitting = false;
+          submittedSuccessfully = true;
           form.reset();
           form.classList.remove('was-submitted');
           statusEl.textContent = 'Vielen Dank! Deine Nachricht ist bei uns angekommen — wir melden uns zeitnah.';
           statusEl.className = 'form-status success';
           submitBtn.textContent = 'Gesendet ✓';
         }).catch(function() {
+          submitting = false;
           statusEl.textContent = 'Ups, das Senden hat nicht geklappt. Bitte schreib direkt an sebblessing@gmail.com oder ruf an.';
           statusEl.className = 'form-status error';
           submitBtn.disabled = false;
