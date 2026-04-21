@@ -387,14 +387,14 @@
   </div>
 
   <div class="finderlohn-section">
-    <h2>Finderlohn für Ihren Tipp</h2>
+    <h2>Finderlohn für deinen Tipp</h2>
     <span class="finderlohn-amount">500 €</span>
-    <p>Wenn wir durch Ihren Hinweis unser neues Zuhause finden und dort einziehen, bedanken wir uns mit <strong>500 € Finderlohn</strong>. Egal ob aus der Nachbarschaft, vom eigenen Objekt oder von Bekannten — jeder Tipp zählt.</p>
+    <p>Wenn wir durch deinen Hinweis unser neues Zuhause finden und dort einziehen, bedanken wir uns mit <strong>500 € Finderlohn</strong>. Egal ob aus der Nachbarschaft, vom eigenen Objekt oder von Bekannten — jeder Tipp zählt.</p>
   </div>
 
   <div class="form-section">
     <h2>Direkt einen Tipp schicken</h2>
-    <p>Schreiben Sie uns über das Formular — wir melden uns zeitnah zurück.</p>
+    <p>Schreib uns über das Formular — wir melden uns zeitnah zurück.</p>
     <form class="contact-form" id="tipp-form" novalidate>
       <label>
         <span>Name</span>
@@ -406,7 +406,7 @@
       </label>
       <label>
         <span>Nachricht</span>
-        <textarea name="message" rows="5" required placeholder="Ihr Hinweis zu einer passenden Wohnung …"></textarea>
+        <textarea name="message" rows="5" required placeholder="Dein Hinweis zu einer passenden Wohnung …"></textarea>
       </label>
       <button type="submit" class="btn btn-primary" id="form-submit">Nachricht senden</button>
       <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
@@ -466,11 +466,11 @@
         }).then(function(res) {
           if (!res.ok) throw new Error('HTTP ' + res.status);
           form.reset();
-          statusEl.textContent = 'Vielen Dank! Ihre Nachricht ist bei uns angekommen — wir melden uns zeitnah.';
+          statusEl.textContent = 'Vielen Dank! Deine Nachricht ist bei uns angekommen — wir melden uns zeitnah.';
           statusEl.className = 'form-status success';
           submitBtn.textContent = 'Gesendet ✓';
         }).catch(function() {
-          statusEl.textContent = 'Ups, das Senden hat nicht geklappt. Bitte schreiben Sie direkt an sebblessing@gmail.com oder rufen Sie an.';
+          statusEl.textContent = 'Ups, das Senden hat nicht geklappt. Bitte schreib direkt an sebblessing@gmail.com oder ruf an.';
           statusEl.className = 'form-status error';
           submitBtn.disabled = false;
           submitBtn.textContent = 'Erneut versuchen';
