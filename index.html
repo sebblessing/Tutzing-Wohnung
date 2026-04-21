@@ -534,7 +534,7 @@
 
       form.addEventListener('input', function(e) {
         if (e.target.classList) e.target.classList.remove('field-error');
-        if (submittedSuccessfully) {
+        if (submittedSuccessfully && e.isTrusted) {
           submittedSuccessfully = false;
           resetFormState();
         }
@@ -583,13 +583,14 @@
           body: JSON.stringify(payload)
         }).then(function(res) {
           if (!res.ok) throw new Error('HTTP ' + res.status);
-          submitting = false;
           submittedSuccessfully = true;
+          submitting = false;
           form.reset();
           form.classList.remove('was-submitted');
           statusEl.textContent = 'Vielen Dank! Deine Nachricht ist bei uns angekommen — wir melden uns zeitnah.';
           statusEl.className = 'form-status success';
           submitBtn.textContent = 'Gesendet ✓';
+          submitBtn.disabled = true;
         }).catch(function() {
           submitting = false;
           statusEl.textContent = 'Ups, das Senden hat nicht geklappt. Bitte schreib direkt an sebblessing@gmail.com oder ruf an.';
