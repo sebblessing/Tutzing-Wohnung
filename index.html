@@ -268,8 +268,10 @@
     border-color: #2563EB;
     background: white;
   }
-  .contact-form input:invalid:not(:placeholder-shown),
-  .contact-form textarea:invalid:not(:placeholder-shown) {
+  .contact-form.was-submitted input:invalid,
+  .contact-form.was-submitted textarea:invalid,
+  .contact-form input.field-error,
+  .contact-form textarea.field-error {
     border-color: #F87171;
   }
   .contact-form textarea {
@@ -467,11 +469,11 @@
     <form class="contact-form" id="tipp-form" novalidate>
       <label>
         <span>Name</span>
-        <input type="text" name="name" required autocomplete="name">
+        <input type="text" name="name" autocomplete="name">
       </label>
       <label>
         <span>E-Mail</span>
-        <input type="email" name="email" required autocomplete="email" inputmode="email">
+        <input type="email" name="email" autocomplete="email" inputmode="email">
       </label>
       <label>
         <span>Nachricht</span>
@@ -517,19 +519,42 @@
     var WEBHOOK_URL = 'https://hook.eu1.make.com/s1dkm0l6dx75cq8pj7v8g7o1iuqv3ox2';
     var form = document.getElementById('tipp-form');
     if (form) {
+      form.addEventListener('input', function(e) {
+        if (e.target.classList) e.target.classList.remove('field-error');
+      });
       form.addEventListener('submit', function(e) {
         e.preventDefault();
-        if (!form.checkValidity()) { form.reportValidity(); return; }
         var submitBtn = document.getElementById('form-submit');
         var statusEl = document.getElementById('form-status');
+        var name = form.name.value.trim();
+        var email = form.email.value.trim();
+        var message = form.message.value.trim();
+
+        form.classList.add('was-submitted');
+        form.name.classList.remove('field-error');
+        form.email.classList.remove('field-error');
+
+        if (!name && !email) {
+          form.name.classList.add('field-error');
+          form.email.classList.add('field-error');
+          statusEl.textContent = 'Bitte gib deinen Namen oder deine E-Mail-Adresse an.';
+          statusEl.className = 'form-status error';
+          return;
+        }
+        if (!message) {
+          statusEl.textContent = 'Bitte schreib uns noch eine kurze Nachricht.';
+          statusEl.className = 'form-status error';
+          return;
+        }
+
         submitBtn.disabled = true;
         submitBtn.textContent = 'Wird gesendet …';
         statusEl.textContent = '';
         statusEl.className = 'form-status';
         var payload = {
-          name: form.name.value.trim(),
-          email: form.email.value.trim(),
-          message: form.message.value.trim(),
+          name: name,
+          email: email,
+          message: message,
           source: 'tutzing-zuhause.de',
           timestamp: new Date().toISOString()
         };
@@ -540,6 +565,7 @@
         }).then(function(res) {
           if (!res.ok) throw new Error('HTTP ' + res.status);
           form.reset();
+          form.classList.remove('was-submitted');
           statusEl.textContent = 'Vielen Dank! Deine Nachricht ist bei uns angekommen — wir melden uns zeitnah.';
           statusEl.className = 'form-status success';
           submitBtn.textContent = 'Gesendet ✓';
