@@ -192,6 +192,11 @@
     display: flex;
     gap: 8px;
     z-index: 100;
+    transform: translateY(110%);
+    transition: transform 0.25s ease;
+  }
+  .sticky-bar.visible {
+    transform: translateY(0);
   }
   .sticky-bar .btn {
     padding: 12px 8px;
@@ -227,7 +232,7 @@
   <h1>Zuhause in Tutzing gesucht</h1>
   <p class="subtitle">Wir sind eine junge Familie und suchen eine Wohnung oder DHH mit Garten.</p>
 
-  <div class="cta-group">
+  <div class="cta-group" id="hero-cta">
     <a href="tel:+4915788681222" class="btn btn-primary" aria-label="Anrufen">
       <svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.05-.24 11.36 11.36 0 0 0 3.56.57 1 1 0 0 1 1 1v3.5a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.36 11.36 0 0 0 .57 3.56 1 1 0 0 1-.24 1.05z"/></svg>
       Anrufen
@@ -287,7 +292,7 @@
       </a>
       <a href="mailto:sebblessing@gmail.com" class="btn btn-secondary">
         <svg class="icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2zm0 4-8 5-8-5V6l8 5 8-5v2z"/></svg>
-        E-Mail
+        sebblessing@gmail.com
       </a>
     </div>
     <p class="signature">Michaela, Sebastian und unser Sohn</p>
@@ -309,6 +314,17 @@
     E-Mail
   </a>
 </nav>
+
+<script>
+  (function() {
+    var heroCta = document.getElementById('hero-cta');
+    var stickyBar = document.querySelector('.sticky-bar');
+    if (!heroCta || !stickyBar || !('IntersectionObserver' in window)) return;
+    new IntersectionObserver(function(entries) {
+      stickyBar.classList.toggle('visible', entries[0].intersectionRatio < 1);
+    }, { threshold: [0, 1] }).observe(heroCta);
+  })();
+</script>
 
 </body>
 </html>
