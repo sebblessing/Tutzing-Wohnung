@@ -12,6 +12,12 @@
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <title>Zuhause in Tutzing gesucht — Junge Familie</title>
+<script>
+  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '694216884570110');
+  fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=694216884570110&ev=PageView&noscript=1" alt=""></noscript>
 <style>
   * { box-sizing: border-box; }
   html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
@@ -516,6 +522,17 @@
       }, { threshold: [0, 1] }).observe(heroCta);
     }
 
+    document.addEventListener('click', function(e) {
+      var link = e.target.closest && e.target.closest('a');
+      if (!link || typeof fbq === 'undefined') return;
+      var href = link.getAttribute('href') || '';
+      var kind = null;
+      if (href.indexOf('tel:') === 0) kind = 'Anruf';
+      else if (href.indexOf('mailto:') === 0) kind = 'E-Mail';
+      else if (href.indexOf('wa.me') !== -1 || href.indexOf('whatsapp.com') !== -1) kind = 'WhatsApp';
+      if (kind) fbq('track', 'Lead', { content_name: kind });
+    });
+
     var WEBHOOK_URL = 'https://hook.eu1.make.com/s1dkm0l6dx75cq8pj7v8g7o1iuqv3ox2';
     var form = document.getElementById('tipp-form');
     if (form) {
@@ -585,6 +602,7 @@
           if (!res.ok) throw new Error('HTTP ' + res.status);
           submittedSuccessfully = true;
           submitting = false;
+          if (typeof fbq !== 'undefined') fbq('track', 'Lead', { content_name: 'Kontaktformular' });
           form.reset();
           form.classList.remove('was-submitted');
           statusEl.textContent = 'Vielen Dank! Deine Nachricht ist bei uns angekommen — wir melden uns zeitnah.';
